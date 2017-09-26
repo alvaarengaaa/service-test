@@ -14,25 +14,27 @@ export class AppComponent implements OnInit {
   title = 'app';
   restaurants:  Restaurant[];
   id: any;
-  // tslint:disable-next-line:no-inferrable-types
+  url = 'https://sistema-restaurantes.firebaseio.com/restaurants.json';
   error: Subject<string> = new Subject();
 
   constructor(private dataService: DataService) {}
 
   ngOnInit() {
-    this.dataService.fetchData();
+    // this.dataService.fetchData(this.url);
     this.dataService.restaurants$.subscribe(x => {
       this.restaurants = x;
+      this.error.next('');
       console.log('Data loaded.');
     });
     this.dataService.error$
       .filter(error => error instanceof FetchHttpError)
       .subscribe(error => {
         this.error.next(error.text);
+        this.restaurants = [];
       });
   }
 
   onLoad() {
-    this.dataService.fetchData();
+    this.dataService.fetchData(this.url);
   }
 }

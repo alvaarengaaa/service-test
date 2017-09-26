@@ -23,9 +23,9 @@ export class DataService {
     this.error$ = this.errorSubject.asObservable();
   }
 
-  public fetchData() {
+  public fetchData(url: string) {
     console.log('Fetching data...');
-    this.http.get('https://sistema-restaurantes.firebaseio.com/restaurants.json')
+    this.http.get(url)
       .map(response => response.json())
       .catch((error: Response) => Observable.throw(new FetchHttpError(error.text())))
       .subscribe(
